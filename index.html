@@ -1,293 +1,212 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>RENT. – Suivi abonnements</title>
-  <meta name="theme-color" content="#0b0d10" />
-  <link rel="manifest" href="manifest.webmanifest?v=7">
-  <link rel="apple-touch-icon" href="icons/icon-180.png" />
-  <style>
-    :root{
-      --bg:#0b0d10; --bg-2:#0f1217; --glass:rgba(255,255,255,.06);
-      --text:#e8ecf1; --muted:#9aa6b2; --accent:#ff3ea5; --accent-2:#6c5ce7;
-      --shadow:0 10px 30px rgba(0,0,0,.45); --radius-xl:22px; --blur:20px;
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 90% -10%, rgba(255,62,165,.15), transparent 60%),
-        radial-gradient(1000px 700px at -10% 110%, rgba(108,92,231,.15), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg-2));
-      background-attachment:fixed;
-    }
-
-    .app{max-width:860px;margin-inline:auto;padding:clamp(16px,3.5vw,28px);display:flex;flex-direction:column;gap:16px}
-    header{display:grid;gap:14px}
-    .titlebar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-    .logo-text{font-size:28px;font-weight:900;letter-spacing:.5px}
-    .logo-text span{color:var(--accent);font-size:32px}
-
-    .toolbar{display:flex;gap:8px;align-items:center}
-    .btn{cursor:pointer;border:0;border-radius:12px;background:var(--glass);color:var(--text);padding:10px 12px;box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.07)}
-    .btn:active{transform:translateY(1px)}
-
-    .cards{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:680px){.cards{grid-template-columns:repeat(2,1fr)}}
-    .glass{background:var(--glass);backdrop-filter:blur(var(--blur));border-radius:var(--radius-xl);box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.07)}
-    .kpi{padding:16px;display:flex;flex-direction:column;gap:10px}
-    .kpi h2{font-size:13px;color:var(--muted);font-weight:600}
-    .kpi .val{font-weight:800;font-size:24px}
-
-    h3{margin:10px 4px 0;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.9px}
-
-    .item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:14px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);margin-bottom:8px}
-    .left{display:flex;align-items:center;gap:12px;min-width:0}
-    .avatar{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg, rgba(255,62,165,.25), rgba(108,92,231,.25))}
-    .info{min-width:0}
-    .name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .meta{font-size:12px;color:var(--muted)}
-    .amount{text-align:right}
-    .amount .main{font-weight:800}
-    .amount .sub{font-size:12px;color:var(--muted)}
-    .actions{display:flex;gap:6px}
-    .icon-btn{appearance:none;border:0;background:rgba(255,255,255,.08);color:var(--text);width:38px;height:38px;border-radius:12px;cursor:pointer;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);font-size:18px}
-
-    .fab{position:fixed;right:18px;bottom:calc(18px + var(--safe-bottom));z-index:50;padding:14px 18px;font-weight:800;background:linear-gradient(135deg, var(--accent), var(--accent-2));border:0;color:white;border-radius:20px;box-shadow:var(--shadow);transition:.2s ease;}
-    .fab.hidden{opacity:0;pointer-events:none;transform:translateY(8px)}
-
-    /* Modal bottom sheet */
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);display:none;align-items:flex-end;z-index:60}
-    .overlay.open{display:flex}
-    .sheet{width:100%;background:var(--glass);backdrop-filter:blur(var(--blur));border-radius:22px 22px 0 0;box-shadow:var(--shadow);display:flex;flex-direction:column;max-height:85vh}
-    .form-body{padding:16px;overflow:auto}
-    .fields{display:grid;gap:12px}
-    label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
-    input,select,textarea{background:rgba(255,255,255,.08);color:var(--text);border:0;border-radius:12px;padding:14px;font-size:16px}
-    .action-bar{padding:12px;display:flex;gap:8px;background:rgba(0,0,0,.25)}
-    .action-bar .btn{flex:1;padding:12px;font-weight:800}
-    .btn.primary{background:linear-gradient(135deg, rgba(255,62,165,.4), rgba(108,92,231,.35))}
-    footer{color:var(--muted);font-size:12px;text-align:center;padding: 12px 0 calc(30px + var(--safe-bottom));}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>RENT. – Suivi abonnements</title>
+<meta name="theme-color" content="#0b0d10" />
+<link rel="manifest" href="manifest.webmanifest?v=9">
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<style>
+:root {
+  --bg:#0b0d10; --bg-2:#0f1217; --glass:rgba(255,255,255,0.06);
+  --text:#e8ecf1; --muted:#9aa6b2; --accent:#ff3ea5; --accent-2:#6c5ce7;
+  --shadow:0 10px 30px rgba(0,0,0,.45); --radius-xl:22px; --blur:20px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:ui-rounded,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 800px at 90% -10%, rgba(255,62,165,.15), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(108,92,231,.15), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+  background-attachment:fixed;
+}
+.app{max-width:860px;margin-inline:auto;padding:clamp(16px,3.5vw,28px);display:flex;flex-direction:column;gap:16px}
+header{display:grid;gap:14px}
+.titlebar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.logo-text{font-size:28px;font-weight:900;letter-spacing:.5px}
+.logo-text span{color:var(--accent);font-size:32px}
+.top-buttons{display:flex;gap:8px}
+.top-buttons button{padding:8px 14px;border-radius:12px;border:0;background:var(--glass);color:var(--text);font-size:14px}
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:680px){.cards{grid-template-columns:repeat(2,1fr)}}
+.glass{background:var(--glass);backdrop-filter:blur(var(--blur));border-radius:var(--radius-xl);box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.07)}
+.kpi{padding:16px;display:flex;flex-direction:column;gap:10px}
+.kpi h2{font-size:13px;color:var(--muted);font-weight:600}
+.fab{position:fixed;right:18px;bottom:calc(18px + var(--safe-bottom));z-index:50;padding:14px 18px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent-2));border:0;color:white;border-radius:20px;box-shadow:var(--shadow);transition:.2s ease;}
+.fab.hidden{opacity:0;pointer-events:none;transform:translateY(8px)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);display:none;align-items:flex-end;z-index:60}
+.overlay.open{display:flex}
+.sheet{width:100%;background:var(--glass);backdrop-filter:blur(var(--blur));border-radius:22px 22px 0 0;box-shadow:var(--shadow);display:flex;flex-direction:column;max-height:85vh}
+.form-body{padding:16px;overflow:auto}
+.fields{display:grid;gap:12px}
+label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
+input,select{background:rgba(255,255,255,.08);color:var(--text);border:0;border-radius:12px;padding:14px;font-size:16px}
+.action-bar{padding:12px;display:flex;gap:8px;background:rgba(0,0,0,.25)}
+.action-bar .btn{flex:1;padding:12px;font-weight:800}
+.btn{cursor:pointer;border:0;border-radius:12px;background:var(--glass);color:var(--text)}
+.btn.primary{background:linear-gradient(135deg,rgba(255,62,165,.4),rgba(108,92,231,.35))}
+.item{padding:14px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);margin-bottom:8px;display:flex;align-items:center;gap:10px;justify-content:space-between}
+.item-info{flex:1;min-width:0}
+.item-title{font-weight:700;font-size:16px;line-height:1.2;word-break:break-word;white-space:normal;overflow-wrap:break-word}
+.item-sub{font-size:12px;color:var(--muted)}
+.item-actions{display:flex;gap:6px;flex-shrink:0}
+.item-actions button{background:none;border:none;cursor:pointer;font-size:18px;color:var(--text)}
+@media(max-width:480px){
+  .item-title{font-size:14px}
+  .item-sub{font-size:11px}
+}
+</style>
 </head>
 <body>
-  <div class="app" id="app">
-    <header>
-      <div class="titlebar">
-        <div class="logo-text">RENT<span>.</span></div>
-        <div class="toolbar">
-          <button id="btn-export" class="btn" type="button">Exporter</button>
-          <button id="btn-import" class="btn" type="button">Importer</button>
-        </div>
+<div class="app">
+  <header>
+    <div class="titlebar">
+      <div class="logo-text">RENT<span>.</span></div>
+      <div class="top-buttons">
+        <button id="export-btn">Exporter</button>
+        <button id="import-btn">Importer</button>
+        <input type="file" id="import-file" style="display:none" />
       </div>
-      <div class="cards">
-        <div class="glass kpi"><h2>Total mensuel</h2><div class="val" id="total-month">€0,00</div></div>
-        <div class="glass kpi"><h2>Total annuel</h2><div class="val" id="total-year">€0,00</div></div>
+    </div>
+    <div class="cards">
+      <div class="glass kpi"><h2>Total mensuel</h2><div id="total-month">0€</div></div>
+      <div class="glass kpi"><h2>Total annuel</h2><div id="total-year">0€</div></div>
+    </div>
+  </header>
+  <main>
+    <h3>Abonnements mensuels</h3>
+    <div id="list-month"></div>
+    <h3>Abonnements annuels</h3>
+    <div id="list-year"></div>
+  </main>
+</div>
+
+<button class="fab" id="btn-add">+ Ajouter</button>
+
+<div class="overlay" id="overlay">
+  <form class="sheet" id="form">
+    <div class="form-body">
+      <div class="fields">
+        <label>Nom<input id="name" required></label>
+        <label>Montant<input id="amount" type="number" step="0.01" required></label>
+        <label>Périodicité<select id="period"><option value="month">Mensuel</option><option value="year">Annuel</option></select></label>
       </div>
-    </header>
+    </div>
+    <div class="action-bar">
+      <button type="button" class="btn" id="btn-cancel">Annuler</button>
+      <button type="submit" class="btn primary">Enregistrer</button>
+    </div>
+  </form>
+</div>
 
-    <main class="section" aria-live="polite">
-      <h3>Abonnements mensuels</h3>
-      <div id="list-month"></div>
+<script>
+const fab=document.getElementById('btn-add');
+const overlay=document.getElementById('overlay');
+const form=document.getElementById('form');
+const listMonth=document.getElementById('list-month');
+const listYear=document.getElementById('list-year');
+const totalMonth=document.getElementById('total-month');
+const totalYear=document.getElementById('total-year');
+const exportBtn=document.getElementById('export-btn');
+const importBtn=document.getElementById('import-btn');
+const importFile=document.getElementById('import-file');
+let subs=JSON.parse(localStorage.getItem('subs')||'[]');
+let editIndex=null;
 
-      <h3>Abonnements annuels</h3>
-      <div id="list-year"></div>
-    </main>
+function saveData(){
+  localStorage.setItem('subs',JSON.stringify(subs));
+}
 
-    <footer>RENT. • LocalStorage • PWA</footer>
-  </div>
+function render(){
+  listMonth.innerHTML='';
+  listYear.innerHTML='';
+  const monthSubs=subs.filter(s=>s.period==='month');
+  const yearSubs=subs.filter(s=>s.period==='year');
+  monthSubs.forEach((s,i)=>listMonth.appendChild(createItem(s,i)));
+  yearSubs.forEach((s,i)=>listYear.appendChild(createItem(s,i)));
+  const totalM=monthSubs.reduce((a,b)=>a+b.amount,0)+yearSubs.reduce((a,b)=>a+b.amount/12,0);
+  const totalY=yearSubs.reduce((a,b)=>a+b.amount,0)+monthSubs.reduce((a,b)=>a+b.amount*12,0);
+  totalMonth.textContent=`${totalM.toFixed(2)}€`;
+  totalYear.textContent=`${totalY.toFixed(2)}€`;
+}
 
-  <button class="fab" id="btn-add" aria-haspopup="dialog" type="button">+ Ajouter</button>
+function createItem(sub,index){
+  const div=document.createElement('div');
+  div.className='item';
+  const info=document.createElement('div');
+  info.className='item-info';
+  info.innerHTML=`<div class="item-title">${sub.name}</div>
+                  <div class="item-sub">${sub.amount}€ / ${sub.period==='month'?'mois':'an'}</div>`;
+  const actions=document.createElement('div');
+  actions.className='item-actions';
+  const editBtn=document.createElement('button');
+  editBtn.innerHTML='✏️';
+  editBtn.onclick=()=>editSub(index,sub.period);
+  const delBtn=document.createElement('button');
+  delBtn.innerHTML='🗑️';
+  delBtn.onclick=()=>{subs.splice(subs.indexOf(sub),1);saveData();render();};
+  actions.appendChild(editBtn);
+  actions.appendChild(delBtn);
+  div.appendChild(info);
+  div.appendChild(actions);
+  return div;
+}
 
-  <!-- Modal Add/Edit -->
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <form class="sheet" id="form" aria-modal="true" role="dialog" novalidate>
-      <div class="form-body">
-        <h2 id="modal-title" style="margin:0 4px 12px;font-size:18px">Nouvel abonnement</h2>
-        <input type="hidden" id="sub-id" />
-        <div class="fields">
-          <label>Nom
-            <input id="name" required placeholder="Netflix, Spotify…" autocomplete="organization" />
-          </label>
-          <label>Montant
-            <input id="amount" inputmode="decimal" type="number" min="0" step="0.01" required placeholder="9.99" />
-          </label>
-          <label>Périodicité
-            <select id="period" required>
-              <option value="month">Mensuel</option>
-              <option value="year">Annuel</option>
-            </select>
-          </label>
-          <label>Catégorie (optionnel)
-            <input id="category" placeholder="Streaming, Cloud…" />
-          </label>
-          <label>Notes (optionnel)
-            <textarea id="notes" rows="3" placeholder="Infos de facturation, comptes…"></textarea>
-          </label>
-        </div>
-      </div>
-      <div class="action-bar">
-        <button type="button" class="btn" id="btn-cancel">Annuler</button>
-        <button type="submit" class="btn primary" id="btn-save">Enregistrer</button>
-      </div>
-    </form>
-  </div>
+function editSub(index,period){
+  const sub=subs.filter(s=>s.period===period)[index];
+  document.getElementById('name').value=sub.name;
+  document.getElementById('amount').value=sub.amount;
+  document.getElementById('period').value=sub.period;
+  editIndex=subs.indexOf(sub);
+  overlay.classList.add('open');
+  fab.classList.add('hidden');
+}
 
-  <input type="file" id="file-input" accept="application/json" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0" />
+fab.onclick=()=>{form.reset();editIndex=null;overlay.classList.add('open');fab.classList.add('hidden');};
+document.getElementById('btn-cancel').onclick=()=>{overlay.classList.remove('open');fab.classList.remove('hidden');};
 
-  <script>
-    // PWA: SW register (cache-buster)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=7').then(r => r.update()).catch(console.error);
-      });
-    }
+form.onsubmit=e=>{
+  e.preventDefault();
+  const name=document.getElementById('name').value;
+  const amount=parseFloat(document.getElementById('amount').value);
+  const period=document.getElementById('period').value;
+  if(editIndex!==null){
+    subs[editIndex]={name,amount,period};
+  }else{
+    subs.push({name,amount,period});
+  }
+  saveData();
+  overlay.classList.remove('open');
+  fab.classList.remove('hidden');
+  render();
+};
 
-    (function(){
-      const $ = id => document.getElementById(id);
-      const fmt = n => (Math.round(n*100)/100).toFixed(2).replace('.', ',') + '€';
+exportBtn.onclick=()=>{
+  const blob=new Blob([JSON.stringify(subs)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='abonnements.json';a.click();
+};
 
-      // State + storage (conserve tes données existantes)
-      let subs = [];
-      const KEY = 'subs';
-      const load = () => { try { subs = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { subs = []; } };
-      const save = () => localStorage.setItem(KEY, JSON.stringify(subs));
+importBtn.onclick=()=>importFile.click();
+importFile.onchange=e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=evt=>{
+    try{
+      const data=JSON.parse(evt.target.result);
+      if(Array.isArray(data)){subs=data;saveData();render();}
+    }catch(err){alert('Fichier invalide');}
+  };
+  reader.readAsText(file);
+};
 
-      // UI refs
-      const listMonth = $('list-month');
-      const listYear = $('list-year');
-      const totalMonth = $('total-month');
-      const totalYear = $('total-year');
-      const overlay = $('overlay');
-      const fab = $('btn-add');
-
-      // Form refs
-      const form = $('form');
-      const fid = $('sub-id');
-      const fname = $('name');
-      const famount = $('amount');
-      const fperiod = $('period');
-      const fcategory = $('category');
-      const fnotes = $('notes');
-
-      function openModal(sub=null){
-        form.reset(); fid.value='';
-        $('modal-title').textContent = sub ? "Modifier l'abonnement" : "Nouvel abonnement";
-        if(sub){
-          fid.value = sub.id;
-          fname.value = sub.name;
-          famount.value = String(sub.amount);
-          fperiod.value = sub.period;
-          fcategory.value = sub.category || '';
-          fnotes.value = sub.notes || '';
-        }
-        overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); fab.classList.add('hidden');
-        setTimeout(()=> fname.focus(), 60);
-      }
-      function closeModal(){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); fab.classList.remove('hidden'); }
-
-      function row(sub){
-        const div = document.createElement('div'); div.className='item';
-        const left = document.createElement('div'); left.className='left';
-        const avatar = document.createElement('div'); avatar.className='avatar';
-        const info = document.createElement('div'); info.className='info';
-        const name = document.createElement('div'); name.className='name'; name.textContent = sub.name;
-        const meta = document.createElement('div'); meta.className='meta';
-        meta.textContent = [sub.category || (sub.period==='month'?'Mensuel':'Annuel')].filter(Boolean).join(' • ');
-        info.append(name, meta); left.append(avatar, info);
-
-        const amt = document.createElement('div'); amt.className='amount';
-        const main = document.createElement('div'); main.className='main'; main.textContent = `${fmt(sub.amount)} / ${sub.period==='month'?'mois':'an'}`;
-        const subline = document.createElement('div'); subline.className='sub';
-        const monthlyEq = sub.period==='month' ? sub.amount : sub.amount/12;
-        const yearlyEq  = sub.period==='year' ? sub.amount : sub.amount*12;
-        subline.textContent = `≈ ${fmt(monthlyEq)} /mois • ${fmt(yearlyEq)} /an`;
-        amt.append(main, subline);
-
-        const actions = document.createElement('div'); actions.className='actions';
-        const edit = document.createElement('button'); edit.className='icon-btn'; edit.title='Modifier'; edit.type='button'; edit.textContent='✏️';
-        const del  = document.createElement('button'); del.className='icon-btn';  del.title='Supprimer'; del.type='button'; del.textContent='🗑️';
-        edit.onclick = ()=> openModal(sub);
-        del.onclick  = ()=> { if(confirm(`Supprimer ${sub.name} ?`)){ subs = subs.filter(s=>s.id!==sub.id); save(); render(); } };
-        actions.append(edit, del);
-
-        const rightWrap = document.createElement('div'); rightWrap.style.display='flex'; rightWrap.style.alignItems='center'; rightWrap.style.gap='8px';
-        rightWrap.append(amt, actions);
-
-        div.append(left, rightWrap);
-        // long-press edit
-        div.addEventListener('pointerdown', ()=>{
-          const t=setTimeout(()=> openModal(sub), 520);
-          const clear=()=>{ clearTimeout(t); div.removeEventListener('pointerup',clear); div.removeEventListener('pointerleave',clear); };
-          div.addEventListener('pointerup',clear); div.addEventListener('pointerleave',clear);
-        });
-        return div;
-      }
-
-      function render(){
-        listMonth.innerHTML = '';
-        listYear.innerHTML  = '';
-        const m = subs.filter(s=>s.period==='month');
-        const y = subs.filter(s=>s.period==='year');
-        if(!m.length) listMonth.innerHTML = '<div class="meta" style="padding:12px 4px">Aucun abonnement mensuel.</div>';
-        if(!y.length) listYear.innerHTML  = '<div class="meta" style="padding:12px 4px">Aucun abonnement annuel.</div>';
-        m.forEach(s=> listMonth.append(row(s)));
-        y.forEach(s=> listYear.append(row(s)));
-        const totalM = m.reduce((a,s)=>a+s.amount,0) + y.reduce((a,s)=>a+s.amount/12,0);
-        const totalY = y.reduce((a,s)=>a+s.amount,0) + m.reduce((a,s)=>a+s.amount*12,0);
-        totalMonth.textContent = fmt(totalM);
-        totalYear.textContent  = fmt(totalY);
-      }
-
-      // Add/Edit submit
-      form.addEventListener('submit', (e)=>{
-        e.preventDefault();
-        const data = {
-          id: fid.value || crypto.randomUUID(),
-          name: fname.value.trim(),
-          amount: Number(famount.value),
-          period: fperiod.value,
-          category: fcategory.value.trim() || undefined,
-          notes: fnotes.value.trim() || undefined
-        };
-        if(!data.name || !isFinite(data.amount)) return alert('Complète correctement le nom et le montant.');
-        const i = subs.findIndex(s=>s.id===data.id);
-        if(i>-1) subs[i] = data; else subs.push(data);
-        save(); render(); closeModal();
-      });
-
-      // Open/close
-      $('btn-add').onclick = ()=> openModal();
-      $('btn-cancel').onclick = ()=> closeModal();
-      overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeModal(); });
-
-      // Export / Import
-      $('btn-export').onclick = ()=>{
-        const blob = new Blob([JSON.stringify({ subs }, null, 2)], { type:'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href=url; a.download='abonnements.json'; a.click();
-        URL.revokeObjectURL(url);
-      };
-      const fileInput = $('file-input');
-      $('btn-import').onclick = ()=> fileInput.click();
-      fileInput.addEventListener('change', async (e)=>{
-        const f = e.target.files && e.target.files[0]; if(!f) return;
-        try{
-          const text = await f.text();
-          const data = JSON.parse(text);
-          if(!data || !Array.isArray(data.subs)) throw new Error('Format invalide');
-          subs = data.subs;
-          save(); render();
-        }catch(err){ alert('Import impossible : ' + err.message); }
-        fileInput.value = '';
-      });
-
-      // Boot
-      load(); render();
-    })();
-  </script>
+render();
+</script>
 </body>
 </html>
