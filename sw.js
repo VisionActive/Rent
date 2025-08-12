@@ -1,5 +1,5 @@
-// sw.js – cache shell PWA (v6)
-const CACHE = "rent-v6";
+// sw.js – cache shell PWA (v7)
+const CACHE = "rent-v7";
 const ASSETS = [
   "./",
   "./index.html",
