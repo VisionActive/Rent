@@ -1,9 +1,9 @@
-// sw.js – cache shell PWA (v7)
-const CACHE = "rent-v7";
+// sw.js – cache shell PWA (v9)
+const CACHE = "rent-v9";
 const ASSETS = [
   "./",
   "./index.html",
-  "./manifest.webmanifest",
+  "./manifest.webmanifest?v=9",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-180.png"
