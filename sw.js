@@ -1,5 +1,5 @@
-// sw.js – cache shell PWA
-const CACHE = "rent-v1";
+// sw.js – cache shell PWA (v4)
+const CACHE = "rent-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -25,11 +25,9 @@ self.addEventListener("activate", (e) => {
 
 self.addEventListener("fetch", (e) => {
   const req = e.request;
-  // Cache-first pour fichiers statiques
   e.respondWith(
     caches.match(req).then(res => res ||
       fetch(req).then(net => {
-        // Optionnel: mettre en cache les nouvelles ressources GET
         if (req.method === "GET" && new URL(req.url).origin === location.origin) {
           const copy = net.clone();
           caches.open(CACHE).then(c => c.put(req, copy));
