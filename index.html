@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RENT. – Suivi abonnements</title>
+  <meta name="theme-color" content="#0b0d10" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <style>
+    :root{
+      --bg: #0b0d10;
+      --bg-2: #0f1217;
+      --glass: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.12);
+      --text: #e8ecf1;
+      --muted: #9aa6b2;
+      --accent: #ff3ea5;
+      --accent-2: #6c5ce7;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius-xl: 22px;
+      --blur: 20px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;}
+    body{
+      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 90% -10%, rgba(255,62,165,.15), transparent 60%),
+                  radial-gradient(1000px 700px at -10% 110%, rgba(108,92,231,.15), transparent 60%),
+                  linear-gradient(180deg, var(--bg), var(--bg-2));
+      background-attachment: fixed;
+    }
+
+    .app{max-width: 860px;margin-inline:auto;padding: clamp(16px, 3.5vw, 28px);display:flex;flex-direction:column;gap:16px;}
+
+    header{display:grid;gap:14px;}
+    .titlebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;row-gap:6px;}
+    .brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+    .logo-text{font-size:clamp(20px,7vw,28px);font-weight:900;letter-spacing:0.5px;line-height:1.1;white-space:nowrap;}
+    .logo-text span{color:var(--accent);font-size:1.2em;line-height:1;}
+
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.06);color:var(--muted);font-size:12px;}
+
+    .cards{display:grid;grid-template-columns:1fr;gap:12px;}
+    @media (min-width: 680px){.cards{grid-template-columns: repeat(2, 1fr);}}
+
+    .glass{background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border-radius:var(--radius-xl);box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.07);}
+
+    .kpi{padding:16px;display:flex;flex-direction:column;gap:10px;}
+    .kpi h2{margin:0;font-size:13px;color:var(--muted);font-weight:600;}
+    .kpi .val{font-size:clamp(20px,6.5vw,32px);font-weight:800;line-height:1.2;}
+
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .btn{cursor:pointer;border:0;color:var(--text);padding:10px 14px;border-radius:12px;background:var(--glass);backdrop-filter:blur(var(--blur));box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.07);}
+    .btn.primary{background:linear-gradient(135deg, rgba(255,62,165,.4), rgba(108,92,231,.35));}
+
+    .switch{display:inline-flex;align-items:center;gap:8px;padding:6px;border-radius:999px;background:var(--glass);box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.07);}
+    .switch button{padding:8px 12px;border-radius:999px;border:0;background:transparent;color:var(--muted);font-weight:700;cursor:pointer;}
+    .switch button.active{color:var(--text);background:rgba(255,255,255,.1);}
+
+    .section{display:flex;flex-direction:column;gap:10px;}
+    .section h3{margin:10px 4px 0;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.9px;}
+
+    .item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:14px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);}
+    .left{display:flex;align-items:center;gap:12px;}
+    .name{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .meta{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .amount{text-align:right;}
+    .amount .main{font-weight:800;}
+    .amount .sub{font-size:12px;color:var(--muted);}
+
+    .fab{position:fixed;right:18px;bottom:18px;z-index:20;padding:14px 18px;font-weight:800;background:linear-gradient(135deg, var(--accent), var(--accent-2));border:0;color:white;border-radius:20px;box-shadow:var(--shadow);}
+  @media (max-width: 480px){
+  .toolbar{width:100%;justify-content:flex-start;}
+  .switch{flex:1;min-width:0;}
+  .switch button{padding:8px 10px;}
+  .btn{padding:8px 10px;}
+  .chip{max-width:100%;}
+}
+</style>
+</head>
+<body>
+  <div class="app" id="app">
+    <header>
+      <div class="titlebar">
+        <div class="brand">
+          <div class="logo-text">RENT<span>.</span></div>
+        </div>
+        <div class="toolbar">
+          <div class="switch">
+            <button id="tab-month" class="active">Mensuel</button>
+            <button id="tab-year">Annuel</button>
+          </div>
+          <button id="btn-export" class="btn">Exporter</button>
+          <button id="btn-import" class="btn">Importer</button>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="glass kpi">
+          <h2>Total mensuel (équivalent)</h2>
+          <div class="val" id="total-month">€0,00</div>
+        </div>
+        <div class="glass kpi">
+          <h2>Total annuel</h2>
+          <div class="val" id="total-year">€0,00</div>
+        </div>
+      </div>
+
+      <div class="chip">Astuce: appuie long sur une carte pour éditer ✏️</div>
+    </header>
+
+    <!-- Le reste du contenu et script JavaScript ici (inchangé) -->
+  </div>
+  <script>
+    // Enregistrement du Service Worker (PWA)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(console.error);
+      });
+    }
+  </script>
+</body>
+</html>
